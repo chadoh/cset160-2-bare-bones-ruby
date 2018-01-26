@@ -1,2 +1,9 @@
-<h1>Hello world!</h1>
-<p>The time is <%= Time.now %></p>
+<h1>All My Students</h1>
+<ul>
+  <% students.each do |student| %>
+    <li>
+      <a href="mailto:<%= student[:email] %>"><%= student[:name] %></a>
+      (<%= student[:discord] %>)
+    </li>
+  <% end %>
+</ul>
