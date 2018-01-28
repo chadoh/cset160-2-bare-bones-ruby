@@ -2,7 +2,6 @@ require "cuba"
 require "cuba/safe"
 require "cuba/render"
 require "erb"
-require "sqlite3"
 
 require_relative "./models/student"
 
@@ -10,8 +9,6 @@ Cuba.use Rack::Session::Cookie, :secret => ENV["SESSION_SECRET"] || "__a_very_lo
 
 Cuba.plugin Cuba::Safe
 Cuba.plugin Cuba::Render
-
-db = SQLite3::Database.new "./db/dev.db"
 
 Cuba.define do
   on root do
@@ -34,9 +31,7 @@ Cuba.define do
     end
 
     on "delete/:id" do |id|
-      db.execute(
-        "DELETE FROM students WHERE id=#{id}"
-      )
+      Student.find(id).delete
       res.redirect "/"
     end
   end
