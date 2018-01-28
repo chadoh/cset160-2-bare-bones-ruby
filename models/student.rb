@@ -1,9 +1,9 @@
 require "active_record"
+require "yaml"
 
-ActiveRecord::Base.establish_connection(
-  adapter: "sqlite3",
-  database: "db/dev.db",
-)
+db_config = YAML::load(File.open('db/database.yml'))
+
+ActiveRecord::Base.establish_connection(db_config)
 
 class Student < ActiveRecord::Base
 end
