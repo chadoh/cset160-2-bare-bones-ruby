@@ -25,12 +25,10 @@ Cuba.define do
 
   on post do
     on "create" do
-      name = req.params["name"]
-      email = req.params["email"]
-      discord = req.params["discord"]
-      db.execute(
-        "INSERT INTO students (name, email, discord) VALUES (?, ?, ?)",
-        name, email, discord
+      Student.create(
+        name: req.params["name"],
+        email: req.params["email"],
+        discord: req.params["discord"],
       )
       res.redirect "/"
     end

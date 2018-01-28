@@ -10,4 +10,11 @@ class Student
       OpenStruct.new(:id => id, :name => name, :email => email, :discord => discord)
     end
   end
+
+  def self.create(params)
+    @db.execute(
+      "INSERT INTO students (#{params.keys.join(',')}) VALUES (?, ?, ?)",
+      params.values
+    )
+  end
 end
