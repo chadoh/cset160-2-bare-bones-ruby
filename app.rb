@@ -12,7 +12,7 @@ Cuba.plugin Cuba::Render
 db = SQLite3::Database.new "./db/dev.db"
 
 Cuba.define do
-  on root do
+  on get, root do
     student_array = db.execute("SELECT * FROM students")
     students = student_array.map do |id, name, email, discord|
       { :id => id, :name => name, :email => email, :discord => discord }
@@ -20,28 +20,26 @@ Cuba.define do
     res.write view("index", students: students)
   end
 
-  on "new" do
+  on get, "new" do
     res.write view("new")
   end
 
-  on post do
-    on "create" do
-      name = req.params["name"]
-      email = req.params["email"]
-      discord = req.params["discord"]
-      db.execute(
-        "INSERT INTO students (name, email, discord) VALUES (?, ?, ?)",
-        name, email, discord
-      )
-      res.redirect "/"
-    end
+  on post, "create" do
+    name = req.params["name"]
+    email = req.params["email"]
+    discord = req.params["discord"]
+    db.execute(
+      "INSERT INTO students (name, email, discord) VALUES (?, ?, ?)",
+      name, email, discord
+    )
+    res.redirect "/"
+  end
 
-    on "delete/:id" do |id|
-      db.execute(
-        "DELETE FROM students WHERE id=#{id}"
-      )
-      res.redirect "/"
-    end
+  on post, "delete/:id" do |id|
+    db.execute(
+      "DELETE FROM students WHERE id=#{id}"
+    )
+    res.redirect "/"
   end
 
   def not_found
